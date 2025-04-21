@@ -7,7 +7,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
-from torch.utils.tensorboard import SummaryWriter
+#from torch.utils.tensorboard import SummaryWriter
 from ConvNet import ConvNet 
 import argparse
 import numpy as np 
@@ -49,7 +49,7 @@ def train(model, device, train_loader, optimizer, criterion, epoch, batch_size):
         
         # ======================================================================
         # Compute loss based on criterion
-        loss = NotImplementedError()
+        loss = criterion(output, target)
         
         # Computes gradient based on final loss
         loss.backward()
@@ -185,17 +185,17 @@ if __name__ == '__main__':
     # Set parameters for Sparse Autoencoder
     parser = argparse.ArgumentParser('CNN Exercise.')
     parser.add_argument('--mode',
-                        type=int, default=1,
+                        type=int, default=2,
                         help='Select mode between 1-3.')
     parser.add_argument('--learning_rate',
                         type=float, default=0.1,
                         help='Initial learning rate.')
     parser.add_argument('--num_epochs',
                         type=int,
-                        default=10,
+                        default=20,
                         help='Number of epochs to run trainer.')
     parser.add_argument('--batch_size',
-                        type=int, default=100,
+                        type=int, default=32,
                         help='Batch size. Must divide evenly into the dataset sizes.')
     parser.add_argument('--log_dir',
                         type=str,
