@@ -8,9 +8,18 @@ class ConvNet(nn.Module):
         super(ConvNet, self).__init__()
         
         # Define various layers here, such as in the tutorial example
-        self.conv1 = nn.Conv2d(in_channels=3, out_channels=10, kernel_size=3)
-        #self.conv2 = Make conv layer like above
-        #self.conv3 = Make conv layer like above
+        if mode == 1:
+            self.conv1 = nn.Conv2d(in_channels=3, out_channels=10, kernel_size=3)
+            self.conv2 = nn.Conv2d(in_channels=10, out_channels=10, kernel_size=3)
+
+
+        elif mode == 2:
+            self.conv1 = nn.Conv2d(in_channels=3, out_channels=20, kernel_size=3)
+            self.conv2 = nn.Conv2d(in_channels=20, out_channels=40, kernel_size=3)
+
+
+        #self.conv3 = nn.Conv2d(in_channels=64, out_channels=128, kernel_size=3)
+
         
         self.fc1_model1 = nn.Linear(360, 100)  # This is first fully connected layer for step 1.
         self.fc1_model2 = nn.Linear(1440, 100) # This is first fully connected layer for step 2.
@@ -62,7 +71,12 @@ class ConvNet(nn.Module):
          
         # Complete this part as model_0, add one more conv2d layer 
         # with relu activation followed by maxpool layer.
-        
+        X = F.relu(self.conv1(X))  # Conv1: 3x32x32 → 10x30x30
+        X = F.max_pool2d(X, kernel_size=2)  # → 10x15x15
+
+        X = F.relu(self.conv2(X))  # Conv2: 10x13x13
+        X = F.max_pool2d(X, kernel_size=2)  # → 10x6x6
+
         X = torch.flatten(X, start_dim=1)
 
         X = F.relu(self.fc1_model1(X))
@@ -76,7 +90,12 @@ class ConvNet(nn.Module):
         # ======================================================================
         
         # Complete this part as model_1. Modify in/out channels for conv2d layers.
-        
+        X = F.relu(self.conv1(X))
+        X = F.max_pool2d(X, kernel_size=2)
+
+        X = F.relu(self.conv2(X))
+        X = F.max_pool2d(X, kernel_size=2)
+
         X = torch.flatten(X, start_dim=1)
 
         X = F.relu(self.fc1_model2(X))
@@ -91,6 +110,13 @@ class ConvNet(nn.Module):
         
         # Complete this part as model_2, add one more conv2d layer 
         # with relu activation. Do not add maxpool after this new conv2d layer.
+        X = F.relu(self.conv1(X))
+        X = F.max_pool2d(X, kernel_size=2)
+
+        X = F.relu(self.conv2(X))
+        X = F.max_pool2d(X, kernel_size=2)
+
+        X = F.relu(self.conv3(X))  # No pooling here
         
         X = torch.flatten(X, start_dim=1)
 
