@@ -7,7 +7,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
-from torch.utils.tensorboard import SummaryWriter
+#from torch.utils.tensorboard import SummaryWriter
 from ConvNet import ConvNet 
 import argparse
 import numpy as np 
@@ -48,9 +48,8 @@ def train(model, device, train_loader, optimizer, criterion, epoch, batch_size):
         # ======================================================================
         # Compute loss based on criterion
         # ----------------- YOUR CODE HERE ----------------------
-        #
-        # Remove NotImplementedError and assign correct loss function.
-        loss = NotImplementedError()
+
+        loss = criterion(output, target)
         
         
         # Computes gradient based on final loss
@@ -139,7 +138,7 @@ def run_main(FLAGS):
     # Initialize the criterion for loss computation 
     # ======================================================================
     # Remove NotImplementedError and assign correct loss function.
-    criterion = NotImplementedError()
+    criterion = nn.CrossEntropyLoss()
     
     
     # Initialize optimizer type 
@@ -184,17 +183,17 @@ if __name__ == '__main__':
     # Set parameters for Sparse Autoencoder
     parser = argparse.ArgumentParser('CNN Exercise.')
     parser.add_argument('--mode',
-                        type=int, default=1,
+                        type=int, default=3,
                         help='Select mode between 1-3.')
     parser.add_argument('--learning_rate',
-                        type=float, default=0.1,
+                        type=float, default=0.01,
                         help='Initial learning rate.')
     parser.add_argument('--num_epochs',
                         type=int,
-                        default=20,
+                        default=10,
                         help='Number of epochs to run trainer.')
     parser.add_argument('--batch_size',
-                        type=int, default=10,
+                        type=int, default=32,
                         help='Batch size. Must divide evenly into the dataset sizes.')
     parser.add_argument('--log_dir',
                         type=str,
